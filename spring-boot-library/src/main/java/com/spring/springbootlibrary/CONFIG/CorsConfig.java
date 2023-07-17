@@ -17,9 +17,7 @@ public class CorsConfig implements RepositoryRestConfigurer {
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config,
                                                      CorsRegistry cors) {
         HttpMethod[] theUnsupportedActions = {
-                HttpMethod.PATCH,
-                HttpMethod.DELETE,
-                HttpMethod.PUT};
+                HttpMethod.PATCH};
 
         config.exposeIdsFor(Book.class);
         config.exposeIdsFor(Review.class);
