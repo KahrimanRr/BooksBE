@@ -1,15 +1,11 @@
 package com.spring.springbootlibrary.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "checkout")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Checkout {
 
     @Id
@@ -29,4 +25,12 @@ public class Checkout {
     @Column(name = "book_id")
     private Long bookId;
 
+    public Checkout() {}
+
+    public Checkout(String userEmail, String checkoutDate, String returnDate, Long bookId) {
+        this.userEmail = userEmail;
+        this.checkoutDate = checkoutDate;
+        this.returnDate = returnDate;
+        this.bookId = bookId;
+    }
 }
