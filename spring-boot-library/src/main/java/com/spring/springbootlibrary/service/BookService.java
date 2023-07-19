@@ -28,7 +28,7 @@ public class BookService {
         Optional<Book> book = bookRepository.findById(bookId);
 
         var validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
-
+        /* todo modify this */
         if (!book.isPresent() || validateCheckout != null || book.get().getCopiesAvailable() <= 0) {
             throw new Exception("Book does not exist or already checked out by User");
         }
