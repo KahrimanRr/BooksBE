@@ -4,6 +4,7 @@ package com.spring.springbootlibrary.Controller;
 import com.spring.springbootlibrary.entity.Book;
 import com.spring.springbootlibrary.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("http://localhost:3000")
@@ -19,18 +20,18 @@ public class BookController {
     }
 
     @GetMapping("/secure/currentloans/count")
-    public int currentLoansCount(){
+    public int currentLoansCount(@RequestHeader(value = "Authorization") String token){
         String userEmail="testuser@gmail.com";
         return bookService.currentLoanCount(userEmail);
     }
 
     @GetMapping("/secure/ischeckout/byuser")
-    public Boolean checkoutBookByUser(@RequestParam Long bookId){
+    public Boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token,@RequestParam Long bookId){
         String userEmail="testuser@gmail.com";
         return bookService.checkedBookByUser(userEmail,bookId);
     }
     @PutMapping("/secure/checkout")
-    public Book checkoutBook(@RequestParam Long bookId) throws Exception{
+    public Book checkoutBook(@RequestHeader(value = "Authorization") String token,@RequestParam Long bookId) throws Exception{
         String userEmail ="testuser@gmail.com";
         return bookService.checkoutBook(userEmail,bookId);
     }
