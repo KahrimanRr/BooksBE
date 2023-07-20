@@ -31,7 +31,7 @@ public class BookController {
     }
     @PutMapping("/secure/checkout")
     public Book checkoutBook(@RequestParam Long bookId) throws Exception{
-        String userEmail ="er@gmail.com";
+        String userEmail ="testuser@gmail.com";
         return bookService.checkoutBook(userEmail,bookId);
     }
 
