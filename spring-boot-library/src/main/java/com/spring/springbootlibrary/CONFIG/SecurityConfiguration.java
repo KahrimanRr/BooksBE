@@ -1,13 +1,16 @@
 package com.spring.springbootlibrary.CONFIG;
 
 import com.okta.spring.boot.oauth.Okta;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfiguration {
@@ -19,7 +22,7 @@ public class SecurityConfiguration {
         http.csrf().disable();
         // protect endpoints at /api/<type>/secure
         http.authorizeRequests(configurer ->
-                        configurer.antMatchers(HttpMethod.valueOf("/api/books/secure/**"))
+                        configurer.antMatchers("/api/books/secure/**")
                                 .authenticated())
                 .oauth2ResourceServer()
                 .jwt();
@@ -35,6 +38,14 @@ public class SecurityConfiguration {
 
 
         return http.build();
+    }
+
+    public JwtDecoder jwtDecoder(OAuth2ResourceServerProperties properties) {
+        var jwtDecoder = NimbusJwtDecoder
+                .withJwkSetUri(properties.getJwt().getJwkSetUri())
+                .build();
+        // additional configuration...
+        return jwtDecoder;
     }
 
 
