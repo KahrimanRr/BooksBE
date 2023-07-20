@@ -10,7 +10,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
-import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfiguration {
@@ -40,13 +39,6 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    public JwtDecoder jwtDecoder(OAuth2ResourceServerProperties properties) {
-        var jwtDecoder = NimbusJwtDecoder
-                .withJwkSetUri(properties.getJwt().getJwkSetUri())
-                .build();
-        // additional configuration...
-        return jwtDecoder;
-    }
 
 
 
