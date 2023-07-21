@@ -4,10 +4,9 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class ExtractJWT {
 
-    public static String payloadJWTExtraction(String token) {
+    public static String payloadJWTExtraction(String token,String ex) {
 
         token = token.replace("Bearer", "").trim();
 
@@ -27,7 +26,7 @@ public class ExtractJWT {
 
         for (String entry : entries) {
             String[] keyValue = entry.split(":");
-            if (keyValue[0].equals("\"sub\"")) {
+            if (keyValue[0].equals(ex)) {
                 int remove = 1;
                 if (keyValue[1].endsWith("}")) {
                     remove = 2;
@@ -38,8 +37,8 @@ public class ExtractJWT {
             }
         }
 
-        if (map.containsKey("\"sub\"")) {
-            return map.get("\"sub\"");
+        if (map.containsKey(ex)) {
+            return map.get(ex);
         }
         return null;
     }
