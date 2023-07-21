@@ -1,10 +1,10 @@
 package com.spring.springbootlibrary.Controller;
 
 
+import com.spring.springbootlibrary.Utils.ExtractJWT;
 import com.spring.springbootlibrary.entity.Book;
 import com.spring.springbootlibrary.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("http://localhost:3000")
@@ -27,7 +27,7 @@ public class BookController {
 
     @GetMapping("/secure/ischeckout/byuser")
     public Boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token,@RequestParam Long bookId){
-        String userEmail="testuser@gmail.com";
+        String userEmail= ExtractJWT.payloadJWTExtraction(token);
         return bookService.checkedBookByUser(userEmail,bookId);
     }
     @PutMapping("/secure/checkout")
