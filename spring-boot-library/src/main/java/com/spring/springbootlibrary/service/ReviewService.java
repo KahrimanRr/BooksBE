@@ -1,4 +1,4 @@
-package com.spring.springbootlibrary.Controller;
+package com.spring.springbootlibrary.service;
 
 import com.spring.springbootlibrary.dao.BookRepository;
 import com.spring.springbootlibrary.dao.ReviewRepository;
