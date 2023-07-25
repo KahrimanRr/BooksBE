@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Service
 @Transactional
 public class ReviewService {
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
     private ReviewRepository reviewRepository;
 
     @Autowired
@@ -33,9 +33,7 @@ public class ReviewService {
         review.setRating(reviewRequest.getRating());
         review.setUserEmail(userEmail);
         if(reviewRequest.getReviewDescription().isPresent()){
-            review.setReviewDescription(reviewRequest.getReviewDescription().map(
-                    Object::toString
-            ).orElse(null));
+          review.setReviewDescription(reviewRequest.getReviewDescription().get());
         }
         review.setDate(Date.valueOf(LocalDate.now()));
         reviewRepository.save(review);
