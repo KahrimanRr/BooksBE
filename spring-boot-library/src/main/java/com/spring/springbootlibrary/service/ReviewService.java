@@ -14,29 +14,38 @@ import java.time.LocalDate;
 @Service
 @Transactional
 public class ReviewService {
-    private final BookRepository bookRepository;
+
     private ReviewRepository reviewRepository;
 
     @Autowired
-    public ReviewService(BookRepository bookRepository, ReviewRepository reviewRepository) {
-        this.bookRepository = bookRepository;
+    public ReviewService( ReviewRepository reviewRepository) {
+
         this.reviewRepository = reviewRepository;
     }
 
     public void postReview(String userEmail, ReviewRequest reviewRequest) throws Exception {
         var validateReview = reviewRepository.findByUserEmailAndBookId(userEmail, reviewRequest.getBookId());
-        if(validateReview !=null){
+        if (validateReview != null) {
             throw new Exception("Review already created");
         }
         var review = new Review();
         review.setBookId(reviewRequest.getBookId());
         review.setRating(reviewRequest.getRating());
         review.setUserEmail(userEmail);
-        if(reviewRequest.getReviewDescription().isPresent()){
-          review.setReviewDescription(reviewRequest.getReviewDescription().get());
+        if (reviewRequest.getReviewDescription().isPresent()) {
+            review.setReviewDescription(reviewRequest.getReviewDescription().get());
         }
         review.setDate(Date.valueOf(LocalDate.now()));
         reviewRepository.save(review);
 
+    }
+
+    public Boolean userReviewListed(String userEmail, Long bookId){
+        var validateReview = reviewRepository.findByUserEmailAndBookId(userEmail,bookId);
+        if (validateReview != null){
+            return true;
+        }else {
+            return false;
+        }
     }
 }
