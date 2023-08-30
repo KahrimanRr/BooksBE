@@ -1,6 +1,5 @@
 package com.spring.springbootlibrary.service;
 
-import com.spring.springbootlibrary.dao.BookRepository;
 import com.spring.springbootlibrary.dao.ReviewRepository;
 import com.spring.springbootlibrary.entity.Review;
 import com.spring.springbootlibrary.requestmodels.ReviewRequest;
