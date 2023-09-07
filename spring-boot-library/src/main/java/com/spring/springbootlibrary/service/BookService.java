@@ -8,7 +8,6 @@ import com.spring.springbootlibrary.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -70,20 +69,17 @@ public class BookService {
     public List<ShelfCurrentLoansResponse> currentLoans(String userEmail) throws Exception {
         List<ShelfCurrentLoansResponse> shelfCurrentLoansResponses = new ArrayList<>();
         List<Checkout> checkoutList = checkoutRepository.findBooksByUserEmail(userEmail);
-        /* this will only give book ids*/
         List<Long> bookIdList = new ArrayList<>();
-        /* extract all the book Ids out of checkout list*/
-        for (Checkout i : checkoutList) {
-            bookIdList.add(i.getBookId());
+        for (Checkout element : checkoutList) {
+            bookIdList.add(element.getBookId());
         }
-        /* bookIdList that is going to extract all the book ids out of checkout*/
-/*select all books based on the book ID  because we need to return
-the actual book with this list of shelfResponse*/
         List<Book> books = bookRepository.findBooksByIds(bookIdList);
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for (Book book : books) {
             Optional<Checkout> checkout = checkoutList.stream()
                     .filter(x -> x.getBookId() == book.getId()).findFirst();
+
             if (checkout.isPresent()) {
                 Date d1 = sdf.parse(checkout.get().getReturnDate());
                 Date d2 = sdf.parse(LocalDate.now().toString());
@@ -96,5 +92,16 @@ the actual book with this list of shelfResponse*/
             }
         }
         return shelfCurrentLoansResponses;
+    }
+    public void returnBook (String userEmail, Long bookId) throws Exception{
+        var book = bookRepository.findById(bookId);
+        var validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail,bookId);
+        if(!book.isPresent() || validateCheckout== null){
+            throw new Exception("Book does not exist or not checked out by user");
+
+        }
+        book.get().setCopiesAvailable(book.get().getCopiesAvailable() + 1);
+        bookRepository.save(book.get());
+        checkoutRepository.deleteById(validateCheckout.getId());
     }
 }
