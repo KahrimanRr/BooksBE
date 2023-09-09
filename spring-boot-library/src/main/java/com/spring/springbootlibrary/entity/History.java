@@ -32,14 +32,18 @@ public class History{
     private String author;
 
     @Column(name = "description")
+    private String description;
+
+    @Column(name = "img")
     private String img;
 
-    public History(String userEmail, String checkoutDate, String returnDate, String title, String author, String img) {
+    public History(String userEmail, String checkoutDate, String returnDate, String title, String author, String description, String img) {
         this.userEmail = userEmail;
         this.checkoutDate = checkoutDate;
         this.returnDate = returnDate;
         this.title = title;
         this.author = author;
+        this.description = description;
         this.img = img;
     }
 }
